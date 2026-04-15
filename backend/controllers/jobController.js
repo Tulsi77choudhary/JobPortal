@@ -75,7 +75,7 @@ export const getAllJobs = async (req, res) => {
 
     // 🔍 Keyword Search (search in title)
     if (keyword) {
-      query.title = { $regex: keyword, $options: "i" }; // case-insensitive
+      query.title = { $regex: keyword, $options: "i" }; 
     }
 
     // 📍 Location Filter
@@ -129,11 +129,60 @@ export const getAllJobs = async (req, res) => {
   }
 };
 
+export const searchJobsByTitleAndLocation = async (req, res) => {
+  try {
+    const { title, location } = req.body;
+
+    let query = {};
+
+    if (title) {
+      const keywords = title.trim().split(" "); 
+      query.title = {
+        $regex: keywords.join("|"), 
+        $options: "i"
+      };
+    }
+
+    // 📍 Location Search
+    if (location) {
+      query.location = {
+        $regex: location.trim(),
+        $options: "i"
+      };
+    }
+
+    const jobs = await Job.find(query)
+      .populate("postedBy", "name email")
+      .sort({ createdAt: -1 });
+
+    if (jobs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No jobs found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      count: jobs.length,
+      jobs,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
 /**
  * @desc    Get Single Job
  * @route   GET /api/jobs/:id
  * @access  Public
  */
+
 export const getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id).populate(

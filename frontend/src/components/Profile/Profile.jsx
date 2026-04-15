@@ -22,6 +22,7 @@ const Profile = () => {
             dispatch(getUser());
         }
     }, [dispatch, user]);
+    
 
     if (isLoading) {
         return (
@@ -34,7 +35,7 @@ const Profile = () => {
     return (
         <div className="min-h-screen bg-gray-100 p-4 md:p-10 flex flex-col items-center">
             {/* Main Wrapper to keep sections aligned */}
-            <div className="w-full max-w-5xl space-y-6">
+            <div className="w-full max-w-5xl space-y-6 mt-20">
                 
                 {/* --- Top Action Buttons --- */}
                 <div className="flex justify-end gap-3">

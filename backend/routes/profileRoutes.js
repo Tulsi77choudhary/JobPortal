@@ -1,13 +1,8 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
-  getProfile,
-  updateProfile,
-  uploadResume,
-} = require("./controllers/profileController");
-
-const { protect } = require("./middleware/authMiddleware");
+import { getProfile,updateProfile, uploadResume } from "../controllers/profileController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 // 🔒 All routes protected
 router.get("/", protect, getProfile);

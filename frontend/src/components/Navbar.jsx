@@ -16,12 +16,12 @@ import { useState } from "react";
 import AuthModal from "./Auth/AuthModel";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { logout } from "../redux/authSlice"; // ✅ IMPORT
+
 
 const navItems = [
   { name: "Home", href: "#" },
-  { name: "About", href: "#" },
-  { name: "Blog", href: "#" },
+  { name: "Application", href: "#" },
+  { name: "Massage", href: "#" },
   { name: "Contact", href: "#" },
 ];
 
@@ -31,7 +31,7 @@ export default function Navbar() {
 
   const auth = useSelector((store) => store.auth);
   const user = auth.user;
-  const isLoggedIn = !!user; // ✅ correct
+  const isLoggedIn = !!user;
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
@@ -48,8 +48,8 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
-            
-            {/* ✅ LOGO FIXED */}
+
+            {/* LOGO FIXED */}
             <div className="flex shrink-0 items-center">
               <span
                 className="text-white font-bold text-2xl cursor-pointer"
@@ -73,7 +73,7 @@ export default function Navbar() {
 
               <div className="h-6 w-px bg-white/10 mx-2" />
 
-              {/* ✅ CONDITIONAL RENDER */}
+              {/*CONDITIONAL RENDER */}
               {!isLoggedIn ? (
                 <>
                   <button className="bg-blue-600 text-white px-6 py-2 rounded-full">
@@ -88,7 +88,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="flex items-center space-x-4">
-                  
+
                   {/* Notification */}
                   <button className="text-gray-400 hover:text-white relative">
                     <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
@@ -98,18 +98,13 @@ export default function Navbar() {
                   {/* Profile */}
                   <Menu as="div" className="relative">
                     <MenuButton>
-                      <img
-                        src={
-                          user?.image ||
-                          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
-                        }
-                        className="size-8 rounded-full"
-                        alt="profile"
-                      />
+                      <div className="size-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium uppercase shadow-sm">
+                        {user?.name ? user.name.charAt(0) : "U"}
+                      </div>
                     </MenuButton>
 
                     <MenuItems className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-xl shadow-lg p-1">
-                      
+
                       <MenuItem>
                         <button
                           onClick={() => navigate("/profile")}
@@ -127,7 +122,7 @@ export default function Navbar() {
 
                       <MenuItem>
                         <button
-                          onClick={handleLogout} // ✅ FIXED
+                          onClick={handleLogout} //  FIXED
                           className="block w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/10"
                         >
                           Sign out

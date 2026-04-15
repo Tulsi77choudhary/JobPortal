@@ -1,16 +1,25 @@
 import User from "../models/User.js";
+import Job from "../models/Job.js";
 
 // GET /api/profile
 export const getProfile = async (req, res) => {
   try {
+    // 👤 User data
     const user = await User.findById(req.user._id).select("-password");
+
+    // 📄 Applied jobs
+    const appliedJobs = await Job.find({
+      applicants: req.user._id
+    }).select("title company location jobType");
 
     res.status(200).json({
       success: true,
       user,
+      appliedJobs, 
     });
 
   } catch (error) {
+    console.error("Profile Error:", error);
     res.status(500).json({
       success: false,
       message: error.message,
